@@ -1,0 +1,36 @@
+font:
+  family: "Arial"
+  fallback: "Helvetica"
+  base_size_pt: 7
+  axis_label_size_pt: 7
+
+lines:
+  axis_width_pt: 0.5
+  data_line_width_pt: 0.7
+
+export:
+  raster_dpi: 600
+  formats:
+    - "pdf"
+    - "svg"
+    - "png"
+    - "tiff"
+
+assembly:
+  default_output: "standalone"
+  add_panel_labels: false
+  assign_manuscript_position: false
+  unassigned_output_dir: "05_figures/unassigned"
+  prefix_digits_minimum: 2
+
+sizes_mm:
+  standard:
+    width: 100
+    height: 80
+  wide:
+    width: 180
+    height: 110
+  heatmap:
+    width: 300
+    height: 220
+

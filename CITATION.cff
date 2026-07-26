@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this workflow resource, please cite the archived release."
+title: "Submission Metabolomics Workflow"
+version: "0.3.0"
+date-released: "2026-07-26"
+type: software
+authors:
+  - family-names: "Xiao"
+    given-names: "Wei"
+abstract: "A configuration-driven resource for reproducible, submission-oriented metabolomics workflows spanning LC-MS quality control, feature curation, leakage-controlled modeling, targeted assay transfer and manuscript reporting."
+keywords:
+  - metabolomics
+  - LC-MS
+  - biomarker modeling
+  - reproducibility
+  - diagnostic validation
+repository-code: "https://github.com/BSSDP/submission-metabolomics-workflow"
+license: "MIT"

@@ -1,0 +1,190 @@
+# This is a configuration contract, not a protocol. Replace all example paths,
+# labels, and rules before analysis. Keep paths relative to the project root.
+project:
+  name: "__PROJECT_NAME__"
+  analysis_profile: "__ANALYSIS_PROFILE__"
+  study_design: "__STUDY_DESIGN__"
+  seed: 20260710
+  primary_language: "R"
+
+inputs:
+  # Register every raw or externally supplied input in input_manifest.tsv.
+  # The bundled R baseline currently consumes the positive/negative aliases.
+  positive_matrix: "00_raw_data/metabolomics/positive_matrix.tsv"
+  negative_matrix: "00_raw_data/metabolomics/negative_matrix.tsv"
+  clinical: "00_raw_data/clinical/clinical_metadata.xlsx"
+  mapping_positive: "00_raw_data/metabolomics/mapping_positive.xlsx"
+  mapping_negative: "00_raw_data/metabolomics/mapping_negative.xlsx"
+  pathway_up: ""
+  pathway_down: ""
+  targeted_panel: ""
+  external_validation_metadata: ""
+  assays:
+    - id: "positive"
+      type: "untargeted_lcms"
+      matrix: "00_raw_data/metabolomics/positive_matrix.tsv"
+      annotation: "00_raw_data/metabolomics/mapping_positive.xlsx"
+      qc_sample_regex: "(?i)^QC"
+    - id: "negative"
+      type: "untargeted_lcms"
+      matrix: "00_raw_data/metabolomics/negative_matrix.tsv"
+      annotation: "00_raw_data/metabolomics/mapping_negative.xlsx"
+      qc_sample_regex: "(?i)^QC"
+
+cohorts:
+  - cohort_id: "discovery"
+    role: "discovery"
+    metadata: "00_raw_data/clinical/clinical_metadata.xlsx"
+    include_in_primary_analysis: true
+  # Add validation, replication, or public cohorts explicitly. Do not merge
+  # cohorts merely for convenience.
+
+matrix:
+  feature_id_column: "feature_id"
+  orientation: "features_by_samples"
+  qc_sample_regex: "(?i)^QC"
+  blank_sample_regex: "(?i)^blank"
+  zero_as_missing: true
+
+clinical:
+  sheet: 1
+  sample_id_column: "sample_id"
+  matrix_sample_id_column: "matrix_sample_id"
+  group_column: "group"
+  include_column: "included"
+  include_value: "yes"
+  pair_id_column: ""
+  batch_column: "batch"
+  injection_order_column: "injection_order"
+  age_column: "age"
+  sex_column: "sex"
+  variables:
+    - column: "age"
+      label: "Age"
+      type: "continuous"
+      scope: "all"
+    - column: "sex"
+      label: "Sex"
+      type: "categorical"
+      scope: "all"
+
+design:
+  primary_endpoint: "replace_with_endpoint"
+  group_order: ["Reference", "Case"]
+  display_group_order: ["Reference", "Case"]
+  adjustment_covariates: []
+  sensitivity_analyses: []
+  contrasts:
+    - id: "Case_vs_Reference"
+      numerator: "Case"
+      reference: "Reference"
+      subset_query: ""
+      covariates: []
+      paired: false
+
+preprocessing:
+  feature_missingness_max: 0.20
+  blank_filter_enabled: false
+  imputation: "half_minimum_by_feature"
+  normalization: "total_signal_to_median"
+  log_base: 2
+  pca_scaling: "pareto"
+  heatmap_row_scaling: "zscore"
+  heatmap_z_clip: 3
+
+pca:
+  confidence_level: 0.95
+  ellipse_type: "norm"
+
+heatmap:
+  top_n_differential: 50
+  distance: "euclidean"
+  clustering_method: "ward.D2"
+  outputs:
+    all_features_group_split: true
+    all_features_global: true
+    top_differential_global: true
+  annotation_columns: ["group", "age", "sex"]
+
+differential:
+  method: "limma"
+  fdr_cutoff: 0.05
+  min_abs_log2fc: 0.263
+  label_top_n: 8
+  grouped_multivolcano: false
+  comparisons:
+    - id: "Case_vs_Reference"
+      numerator: "Case"
+      reference: "Reference"
+      subset_query: ""
+
+annotation:
+  columns:
+    feature_id: "Alignment ID"
+    name: "Metabolite name"
+    formula: "Formula"
+    inchikey: "INCHIKEY"
+    smiles: "SMILES"
+    ontology: "Ontology"
+    fill_fraction: "Fill %"
+    msms_assigned: "MS/MS assigned"
+    total_score: "Total score"
+    rt_matched: "RT matched"
+    mz_matched: "m/z matched"
+    msms_matched: "MS/MS matched"
+  fill_fraction_scale: "fraction"
+  # In this template, Fill % represents observed/detected coverage: higher is better.
+  # Set to lower_is_better only when the supplied field is a missing/imputation fraction.
+  fill_fraction_direction: "higher_is_better"
+  strange_name_length_min: 80
+  strange_name_punctuation_min: 14
+  auto_exclude_lipid_shorthand: true
+  auto_exclude_strange_names: false
+  require_manual_drug_contaminant_review: true
+
+pathway:
+  top_n: 15
+  fdr_column: "FDR"
+  pathway_column: "Pathway"
+  hits_column: "Hits"
+  impact_column: "Impact"
+
+modeling:
+  enabled: false
+  task_type: "binary_classification"
+  # The bundled modeling.py is a transparent exploratory screen with a reserved
+  # hold-out set. For manuscript-facing internal performance, implement the
+  # repeated_nested_cv protocol in references/modeling-contract.md.
+  evaluation_protocol: "exploratory_holdout"
+  confirmatory_protocol: "repeated_nested_cv"
+  primary_metric: "roc_auc"
+  secondary_metrics: ["pr_auc", "calibration", "sensitivity", "specificity"]
+  selection_tie_breakers: ["calibration", "repeat_stability", "parsimony"]
+  candidate_model_families: ["regularized_linear", "supervised_latent", "kernel", "tree", "probabilistic"]
+  allowed_representations: ["log_absolute_signal"]
+  fixed_panel_features: []
+  feature_count_grid: []
+  focused_optimization_enabled: false
+  # Populate this before a secondary optimization phase. Keep the list finite
+  # and rerun a fresh nested evaluation for all listed candidates.
+  focused_optimization_candidates: []
+  curated_matrix: "03_processed_data/metabolomics/matrix_annotated_metabolite_level/metabolite_matrix_combined_common_name.tsv"
+  metadata: "02_metadata/sample_metadata_master.tsv"
+  sample_id_column: "sample_id"
+  matrix_sample_id_column: "matrix_sample_id"
+  group_column: "group"
+  positive_class: "Case"
+  reference_class: "Reference"
+  external_validation_enabled: false
+  clinical_marker_columns: []
+  fixed_clinical_thresholds: []
+  residualization_reference_group: ""
+  covariate_sensitivity_analyses: []
+  test_fraction: 0.25
+  cv_folds: 5
+  cv_repeats: 3
+  bootstrap_iterations: 2000
+  n_jobs: 4
+  consensus_top_n: 30
+  single_feature_roc_top_n: 10
+  single_feature_include_regex: ""

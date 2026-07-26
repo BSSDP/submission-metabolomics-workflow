@@ -1,0 +1,5 @@
+# Core versions recorded for the targeted-panel modeling implementation.
+numpy==2.4.4
+pandas==3.0.1
+scikit-learn==1.7.2
+

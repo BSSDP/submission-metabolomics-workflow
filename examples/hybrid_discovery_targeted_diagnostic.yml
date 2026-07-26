@@ -1,0 +1,56 @@
+# Example declaration for a hybrid discovery-to-targeted diagnostic project.
+# Replace every placeholder before analysis; all paths are project-relative.
+analysis_id: "M08_targeted_panel_diagnostic"
+status: "example_only"
+evidence_layer: "discovery_internal_resampling"
+
+endpoint:
+  task_type: "binary_classification"
+  reference_class: "Normal_control"
+  positive_class: "Malignant_tumour"
+  intended_use: "adjunctive_preoperative_malignancy_assessment"
+
+inputs:
+  discovery_feature_matrix: "03_processed_data/metabolomics/discovery_features.tsv"
+  targeted_analyte_matrix: "03_processed_data/targeted/area_ratio_log2.tsv"
+  clinical_metadata: "02_metadata/sample_metadata_master.tsv"
+  sample_id_column: "sample_id"
+  age_column: "age"
+  clinical_marker_columns: ["CA125"]
+  fixed_panel_features: []
+
+model_development:
+  candidate_library: ["regularized_logistic", "lda", "rbf_svm", "extra_trees"]
+  representations: ["raw_log2_area_ratio"]
+  outer_folds: 5
+  outer_repeats: 20
+  inner_folds: 5
+  seed: 20260722
+  primary_metric: "roc_auc"
+  secondary_metrics: ["pr_auc", "sensitivity", "specificity", "calibration"]
+  threshold_rule: "youden_from_inner_out_of_fold_predictions"
+  selection_rule: "primary_metric_then_calibration_stability_parsimony"
+
+covariate_sensitivity:
+  enabled: true
+  covariate: "age"
+  reference_group: "Normal_control"
+  fit_rule: "fit_linear_feature_trends_within_each_outer_training_partition"
+  application_rule: "subtract_reference_group_age_component_from_training_and_held_out_samples"
+  prohibit: "do_not_residualize_a_completed_model_score"
+
+lock_and_validation:
+  lock_before_validation: ["feature_panel", "preprocessing", "model_configuration", "threshold"]
+  validation_cohort_role: "temporal_or_external_validation"
+  validation_rule: "apply_once_without_reoptimization"
+
+clinical_integration:
+  enabled: false
+  branches: ["panel_score_alone", "marker_alone", "panel_score_plus_marker"]
+  required_note: "If a fixed full-discovery score is reused, label downstream integration as exploratory unless the entire score-generation pipeline is cross-fitted."
+
+outputs:
+  tables: ["input_audit.tsv", "outer_predictions.tsv", "repeat_metrics.tsv", "threshold_summary.tsv", "calibration.tsv"]
+  figures: ["roc_pr", "stable_metrics", "calibration", "age_sensitivity"]
+  release_records: ["environment_versions.tsv", "analysis_card.md", "figure_source_data"]
+

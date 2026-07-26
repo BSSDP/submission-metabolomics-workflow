@@ -1,0 +1,3 @@
+column	label	type	unit	scope	levels	missing_value_meaning	source_file	notes
+age	Age	continuous	years	all		unknown	clinical metadata	
+sex	Sex	categorical		all	Female;Male	unknown	clinical metadata	

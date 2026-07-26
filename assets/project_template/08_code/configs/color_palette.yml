@@ -1,0 +1,38 @@
+groups:
+  control: "#80B1D3"
+  disease: "#FB8072"
+  qc: "#7A5195"
+  unknown: "#B3B3B3"
+
+directions:
+  up: "#FB8072"
+  down: "#80B1D3"
+  background: "#D9D9D9"
+  missing: "#B3B3B3"
+
+heatmap:
+  low: "#2166AC"
+  mid: "#F7F7F7"
+  high: "#B2182B"
+
+ion_modes:
+  positive: "#7A5195"
+  negative: "#42949E"
+
+clinical:
+  categorical:
+    - "#80B1D3"
+    - "#8DD3C7"
+    - "#BEBADA"
+    - "#FDB462"
+    - "#FB8072"
+    - "#B3B3B3"
+  continuous_low: "#EFF3FF"
+  continuous_high: "#2171B5"
+  not_applicable: "#FFFFFF"
+
+text:
+  dark: "#2F2F2F"
+  axis: "#5F5F5F"
+  grid: "#D9D9D9"
+

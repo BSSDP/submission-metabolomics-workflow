@@ -1,0 +1,7 @@
+interface:
+  display_name: "Submission Metabolomics Workflow"
+  short_description: "Portable, submission-grade metabolomics workflows"
+  default_prompt: "Use $submission-metabolomics-workflow to scaffold or revise a traceable metabolomics study."
+
+policy:
+  allow_implicit_invocation: true

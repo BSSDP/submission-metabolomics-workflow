@@ -1,0 +1,92 @@
+# Complete this manifest before fitting a manuscript-facing model. Keep it with
+# the analysis outputs and update it only through documented versioned changes.
+analysis_id: "M08_modeling"
+status: "draft"
+evidence_layer: "internal_development"
+endpoint:
+  task_type: "binary_classification"
+  positive_class: "Case"
+  reference_class: "Reference"
+  eligible_samples_rule: "replace_with_explicit_rule"
+  intended_use: "replace_with_screening_or_triage_use"
+
+inputs:
+  cohort_role: "discovery"
+  matrix: "replace_with_project_relative_path"
+  metadata: "replace_with_project_relative_path"
+  fixed_panel_features: []
+  clinical_marker_features: []
+  covariates_for_sensitivity: []
+
+evaluation:
+  primary_metric: "roc_auc"
+  secondary_metrics: ["pr_auc", "calibration", "sensitivity", "specificity"]
+  protocol: "repeated_nested_cv"
+  split_unit: "sample_id"
+  grouping_constraints: []
+  outer_folds: 5
+  outer_repeats: 20
+  inner_folds: 5
+  seed: 20260710
+  threshold_rule: "youden_within_inner_resampling"
+  selection_rule: "maximize_primary_metric"
+  tie_breakers: ["calibration", "repeat_stability", "parsimony"]
+
+candidate_screen:
+  representations:
+    - id: "log_absolute_signal"
+      rationale: "Replace with a biological and analytical rationale."
+  feature_rules:
+    - id: "fixed_panel"
+      rationale: "Use the prespecified targeted analyte panel."
+  feature_count_grid: []
+  model_families:
+    - id: "regularized_logistic"
+      mandatory_baseline: true
+      parameter_grid: "replace_with_bounded_grid"
+    - id: "lda"
+      mandatory_baseline: false
+      parameter_grid: "default_or_bounded_grid"
+  packages_allowed: []
+
+focused_optimization:
+  enabled: false
+  question: "State one bounded methodological question before running it."
+  candidates: []
+  stopping_rule: "No candidates beyond this manifest version."
+  ensemble_rules:
+    enabled: false
+    base_models: []
+    weight_grid: []
+    training_source: "inner_out_of_fold_predictions_only"
+
+covariate_sensitivity:
+  enabled: false
+  covariates: []
+  rule: "fit_within_each_training_partition"
+  reference_group: ""
+  comparison_protocol: "same_outer_folds_repeats_and_metrics"
+
+clinical_comparisons:
+  enabled: false
+  branches: ["panel_alone", "marker_alone", "panel_plus_marker"]
+  fixed_clinical_cutoffs: []
+  sequential_strategy:
+    enabled: false
+    step_1_score_generation: "nested_out_of_fold_only"
+
+lock_and_validation:
+  locked_before_independent_validation: []
+  independent_cohort_input_contract: ""
+
+outputs:
+  required_tables:
+    - "sample_inclusion.tsv"
+    - "resampling_assignments.tsv"
+    - "model_screening_summary.tsv"
+    - "inner_selection.tsv"
+    - "outer_predictions.tsv"
+    - "repeat_metrics.tsv"
+    - "feature_selection_frequency.tsv"
+    - "failure_log.tsv"
+  required_figures: ["roc", "precision_recall", "calibration", "score_distribution"]

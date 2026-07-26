@@ -1,0 +1,2 @@
+contrast_id	analysis_layer	outcome_or_group_column	numerator	reference	subset_query	covariates	paired	multiple_testing_family	primary_or_sensitivity	status
+Case_vs_Reference	feature_and_analyte	group	Case	Reference			no	primary_feature_family	primary	configure

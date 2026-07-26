@@ -1,0 +1,4 @@
+input_id	cohort_id	assay_id	input_role	file_path	format	layout	id_column	unit_or_transform	immutable	checksum	allowed_use	notes
+clinical_discovery	discovery	clinical	metadata	00_raw_data/clinical/clinical_metadata.xlsx	xlsx	one_row_per_sample	sample_id	NA	yes		primary	Replace with the source clinical file
+positive_discovery	discovery	positive	intensity_matrix	00_raw_data/metabolomics/positive_matrix.tsv	tsv	features_by_samples	feature_id	raw intensity	yes		primary	Replace or remove for non-dual-ion projects
+negative_discovery	discovery	negative	intensity_matrix	00_raw_data/metabolomics/negative_matrix.tsv	tsv	features_by_samples	feature_id	raw intensity	yes		primary	Replace or remove for non-dual-ion projects

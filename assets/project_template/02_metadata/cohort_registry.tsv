@@ -1,0 +1,2 @@
+cohort_id	cohort_label	role	assay_profile	n_samples_expected	endpoint_available	clinical_marker_available	eligible_for_primary_analysis	eligibility_notes
+discovery	Discovery cohort	discovery	__ANALYSIS_PROFILE__				yes	Configure before analysis
