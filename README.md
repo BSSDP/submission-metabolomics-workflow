@@ -1,6 +1,6 @@
 # Submission Metabolomics Workflow
 
-**Version:** `v0.3.0`  
+**Version:** `v0.3.1`  
 **Status:** fixed public release  
 **Scope:** reproducible, submission-oriented metabolomics analysis and reporting framework
 

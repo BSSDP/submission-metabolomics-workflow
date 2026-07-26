@@ -1,8 +1,9 @@
-# Fixed public release: v0.3.0
+# Fixed public release: v0.3.1
 
 This directory records the immutable public release of the reusable workflow
 resource. It is intentionally distinct from study-specific analysis code and
-participant-level data.
+participant-level data. This metadata-only archival release has unchanged
+workflow content relative to v0.3.0.
 
 ## Included release guarantees
 

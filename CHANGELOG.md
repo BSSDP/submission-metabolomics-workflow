@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.1 (2026-07-26)
+
+- Created a metadata-only archival release after enabling Zenodo-GitHub
+  integration. Workflow code and public package contents are unchanged from
+  v0.3.0.
+
 ## v0.3.0 (2026-07-26)
 
 - Prepared the first fixed public release.
