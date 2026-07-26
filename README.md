@@ -4,6 +4,8 @@
 **Status:** fixed public release  
 **Scope:** reproducible, submission-oriented metabolomics analysis and reporting framework
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21593800.svg)](https://doi.org/10.5281/zenodo.21593800)
+
 This repository provides a configuration-driven workflow resource for
 untargeted LC-MS, targeted analyte panels and discovery-to-validation
 metabolomics studies. It is designed to preserve the traceable path from raw
@@ -70,10 +72,13 @@ a new version, release note and manifest.
 
 ## Citation and disclosure
 
-Use [`CITATION.cff`](CITATION.cff) as the repository citation metadata after a
-public archive DOI is assigned. This resource documents reproducible workflow
-practice; it does not itself constitute validation of a biomarker, assay or
-clinical algorithm.
+For the fixed `v0.3.1` release, cite DOI
+[`10.5281/zenodo.21593800`](https://doi.org/10.5281/zenodo.21593800). The
+concept DOI [`10.5281/zenodo.21593799`](https://doi.org/10.5281/zenodo.21593799)
+always resolves to the latest archived version. [`CITATION.cff`](CITATION.cff)
+contains the version-specific citation metadata. This resource documents
+reproducible workflow practice; it does not itself constitute validation of a
+biomarker, assay or clinical algorithm.
 
 ## Repository layout
 

@@ -15,4 +15,5 @@ keywords:
   - reproducibility
   - diagnostic validation
 repository-code: "https://github.com/BSSDP/submission-metabolomics-workflow"
+doi: "10.5281/zenodo.21593800"
 license: "MIT"
